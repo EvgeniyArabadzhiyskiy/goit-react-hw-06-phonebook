@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import Button from 'components/Button/Button';
 import { Box } from 'components/Box/Box';
-import { UserName, UserNumber } from './ContactItem.styled';
+import { CheckBoxLabel, UserName, UserNumber } from './ContactItem.styled';
+import { AiFillHeart } from "react-icons/ai";
 
-const ContactItem = ({ name, number, onDeleteContact }) => {
+const ContactItem = ({ name, number, favorites, onDeleteContact,  toggleFavoritContact }) => {
   return (
     <div>
       <Box
@@ -13,6 +14,11 @@ const ContactItem = ({ name, number, onDeleteContact }) => {
         textAlign="left"
         as="li"
       >
+        <CheckBoxLabel>
+        <input  type='checkbox' checked={favorites} onChange={toggleFavoritContact}  />
+          <AiFillHeart  />
+        </CheckBoxLabel>
+        
         <UserName>{name}:</UserName>
         <UserNumber>{number}</UserNumber>
         <Button onClick={onDeleteContact}>Delete</Button>

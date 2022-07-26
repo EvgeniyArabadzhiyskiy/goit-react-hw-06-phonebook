@@ -7,3 +7,25 @@ export const UserName = styled.span`
 `;
 
 export const UserNumber = UserName;
+
+export const CheckBoxLabel = styled.label`
+  position: relative;
+  color: black;
+
+  & input {
+    opacity: 0;
+  }
+
+  & > svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    fill: white;
+  }
+
+  & input:checked ~ svg {
+    fill: blue;
+  }
+`;

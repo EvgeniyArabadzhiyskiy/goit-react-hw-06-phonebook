@@ -1,12 +1,15 @@
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { toast } from 'react-toastify';
+import { toast, Zoom } from 'react-toastify';
 
 import Button from 'components/Button/Button';
 import { StyledInput } from '../Input/Input.styled';
 import { FormLabel, StyledForm, StyledError } from './PhoneForm.styled';
+
+import { useDispatch, useSelector } from 'react-redux';
+import contactsActions from 'redux/contacts/contacts-actions';
+import { contactsSelectors } from 'redux/contacts/contacts-selectors';
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -25,7 +28,10 @@ let contactShema = yup.object().shape({
     .matches(phoneRegExp, 'Phone number is not valid'),
 });
 
-const PhoneForm = ({ addNewContact }) => {
+const PhoneForm = () => {
+  const dispatch = useDispatch();
+  const items = useSelector(contactsSelectors.getItems);
+
   const {
     register,
     handleSubmit,
@@ -34,7 +40,16 @@ const PhoneForm = ({ addNewContact }) => {
   } = useForm({ resolver: yupResolver(contactShema) });
 
   const submitForm = (data, evt) => {
-    addNewContact(data);
+    const foundName = items.find(item => item.name === data.name);
+
+    if (foundName) {
+      return toast.error(`${data.name} is alredy in contacts`, {
+        position: 'top-right',
+        transition: Zoom,
+      });
+    }
+
+    dispatch(contactsActions.addContact(data));
     reset();
   };
 
@@ -79,10 +94,6 @@ const PhoneForm = ({ addNewContact }) => {
       </Button>
     </StyledForm>
   );
-};
-
-PhoneForm.propTypes = {
-  addNewContact: PropTypes.func.isRequired,
 };
 
 export default PhoneForm;
