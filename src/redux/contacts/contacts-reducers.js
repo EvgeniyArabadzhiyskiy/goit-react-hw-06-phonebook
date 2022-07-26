@@ -23,24 +23,30 @@ export default combineReducers({
   filter: filterReducer,
 });
 
-// const contactsReducer = (state = [], { type, payload }) => {
-//   switch (type) {
-//     case contactsActions.addContact.type:
+// const contactsReducer = createReducer([], builder => {
+//   builder
+//     .addCase(contactsActions.addContact, (state, { payload }) => {
 //       return [payload, ...state];
-//     case contactsActions.deleteContact.type:
+//     })
+//     .addCase(contactsActions.deleteContact, (state, { payload }) => {
 //       return state.filter(contact => contact.id !== payload);
+//     })
+//     .addCase(contactsActions.toggleFavoritContact, (state, { payload }) => {
+//       return state.map(contact =>
+//         contact.id === payload
+//           ? { ...contact, favorites: !contact.favorites }
+//           : contact
+//       );
+//     });
+// });
 
-//     default:
-//       return state;
-//   }
-// };
+// const filterReducer = createReducer('', builder => {
+//   builder.addCase(contactsActions.filteredContacts, (_state, { payload }) => {
+//     return payload;
+//   });
+// });
 
-// const filterReducer = (state = '', { type, payload }) => {
-//   switch (type) {
-//     case contactsActions.filteredContacts.type:
-//       return payload;
-
-//     default:
-//       return state;
-//   }
-// };
+// export default combineReducers({
+//   items: contactsReducer,
+//   filter: filterReducer,
+// });
